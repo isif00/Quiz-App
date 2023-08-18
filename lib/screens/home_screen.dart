@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:quiz_game/screens/quiz_screen.dart';
 
 class Home extends StatefulWidget {
@@ -13,9 +14,11 @@ class _HomeState extends State<Home> {
   Widget activeScreen = const Home();
 
   void switchScreen() {
-    setState(() {
-      activeScreen = const QuizScreen();
-    });
+    setState(
+      () {
+        activeScreen = const QuizScreen();
+      },
+    );
   }
 
   @override
@@ -36,11 +39,12 @@ class _HomeState extends State<Home> {
           ),
         ),
         const Gap(20),
-        const Text(
+        Text(
           "Learn Flutter the fun way !",
-          style: TextStyle(
+          style: GoogleFonts.comfortaa(
             color: Colors.white,
-            fontSize: 24,
+            fontSize: 25,
+            fontWeight: FontWeight.bold,
           ),
         ),
         const Gap(10),
@@ -65,19 +69,20 @@ class _HomeState extends State<Home> {
                   ),
                 );
               },
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.arrow_circle_right_outlined,
                     color: Colors.white,
                   ),
-                  Gap(10),
+                  const Gap(10),
                   Text(
                     "Start Quiz !",
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 13, 55, 138),
+                    style: GoogleFonts.comfortaa(
+                      color: const Color.fromARGB(255, 13, 55, 138),
                       fontSize: 20,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ],
