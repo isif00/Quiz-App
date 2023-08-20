@@ -1,25 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:quiz_game/screens/quiz_screen.dart';
 
-class Home extends StatefulWidget {
-  const Home({super.key});
-
-  @override
-  State<Home> createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
-  Widget activeScreen = const Home();
-
-  void switchScreen() {
-    setState(
-      () {
-        activeScreen = const QuizScreen();
-      },
-    );
-  }
+class Home extends StatelessWidget {
+  final void Function() startQuiz;
+  const Home({super.key, required this.startQuiz});
 
   @override
   Widget build(BuildContext context) {
@@ -39,12 +23,11 @@ class _HomeState extends State<Home> {
           ),
         ),
         const Gap(20),
-        Text(
+        const Text(
           "Learn Flutter the fun way !",
-          style: GoogleFonts.comfortaa(
+          style: TextStyle(
             color: Colors.white,
-            fontSize: 25,
-            fontWeight: FontWeight.bold,
+            fontSize: 24,
           ),
         ),
         const Gap(10),
@@ -61,28 +44,20 @@ class _HomeState extends State<Home> {
                   },
                 ),
               ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const QuizScreen(),
-                  ),
-                );
-              },
-              child: Row(
+              onPressed: startQuiz,
+              child: const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(
+                  Icon(
                     Icons.arrow_circle_right_outlined,
                     color: Colors.white,
                   ),
-                  const Gap(10),
+                  Gap(10),
                   Text(
                     "Start Quiz !",
-                    style: GoogleFonts.comfortaa(
-                      color: const Color.fromARGB(255, 13, 55, 138),
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 13, 55, 138),
                       fontSize: 20,
-                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ],

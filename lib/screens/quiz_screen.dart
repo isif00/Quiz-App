@@ -1,72 +1,69 @@
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:quiz_game/widget/questions.dart';
+import 'package:quiz_game/data/questions.dart';
+import 'package:quiz_game/screens/questions_screen.dart';
+import 'package:quiz_game/screens/results_screen.dart';
+import 'package:quiz_game/screens/start_screen.dart';
 
-import '../data/questions.dart';
-
-class QuizScreen extends StatefulWidget {
-  const QuizScreen({super.key});
+class Quiz extends StatefulWidget {
+  const Quiz({super.key});
 
   @override
-  State<QuizScreen> createState() => _QuizScreenState();
+  State<Quiz> createState() {
+    return _QuizState();
+  }
 }
 
-class _QuizScreenState extends State<QuizScreen> {
-  var currentQuestionIndex = 0;
-  final List<String> selctedAnswers = [];
-  void answerQuestion() {
+class _QuizState extends State<Quiz> {
+  List<String> selectedAnswers = [];
+  var activeScreen = 'start-screen';
+
+  void switchScreen() {
     setState(() {
-      currentQuestionIndex++;
+      activeScreen = 'questions-screen';
     });
   }
 
   void chooseAnswer(String answer) {
-    selctedAnswers.add(answer);
+    selectedAnswers.add(answer);
+
+    if (selectedAnswers.length == questions.length) {
+      setState(() {
+        activeScreen = 'results-screen';
+      });
+    }
   }
 
   @override
-  Widget build(BuildContext context) {
-    final currentQuestion = questions[currentQuestionIndex];
+  Widget build(context) {
+    Widget screenWidget = StartScreen(switchScreen);
 
-    return Scaffold(
-      body: Container(
-        padding: const EdgeInsets.all(50),
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color.fromARGB(255, 140, 183, 222),
-              Colors.blueAccent,
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
+    if (activeScreen == 'questions-screen') {
+      screenWidget = QuestionsScreen(
+        onSelectAnswer: chooseAnswer,
+      );
+    }
+
+    if (activeScreen == 'results-screen') {
+      screenWidget = ResultsScreen(
+        chosenAnswers: selectedAnswers,
+      );
+    }
+
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        body: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color.fromARGB(255, 170, 185, 247),
+                Color.fromARGB(255, 70, 163, 255),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
           ),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Center(
-              child: Text(
-                currentQuestion.text,
-                style: GoogleFonts.comfortaa(
-                  color: Colors.white,
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            const Gap(10),
-            ...currentQuestion.getShuffledAnswers().map(
-              (answer) {
-                return Question(
-                  answerText: answer,
-                  onTap: answerQuestion,
-                );
-              },
-            ),
-          ],
+          child: screenWidget,
         ),
       ),
     );
